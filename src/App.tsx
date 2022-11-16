@@ -6,7 +6,7 @@ import Tv from "./Routes/Tv";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/nomaflix">
       <Header />
       <Routes>
         <Route path="/tv" element={<Tv />}>
@@ -14,7 +14,7 @@ function App() {
         </Route>
         <Route path="/search" element={<Search />}>
           <Route path="/search/movie/:movieId" element={<Search />} />
-          <Route path="/search/tv/:movieId" element={<Search />} />
+          <Route path="/search/tv/:tvId" element={<Search />} />
         </Route>
         <Route path="/" element={<Home />}>
           <Route path="/movies/:category/:movieId" element={<Home />} />
