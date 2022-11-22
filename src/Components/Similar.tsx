@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
   getMovieSimilar,

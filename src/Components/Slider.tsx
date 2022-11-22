@@ -48,7 +48,7 @@ export const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  width: 100vw;
+  width: 100%;
   position: absolute;
 
   &:hover ~ ${Arrows} {

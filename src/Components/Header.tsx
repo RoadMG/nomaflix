@@ -9,11 +9,15 @@ const Nav = styled(motion.nav)`
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   top: 0;
   padding: 20px 60px;
   color: white;
   font-size: 14px;
+  @media screen and (max-width: 500px) {
+    justify-content: flex-start;
+    padding: 0px;
+  }
 `;
 
 const Col = styled.div`
@@ -30,11 +34,19 @@ const Logo = styled(motion.svg)`
     stroke-width: 6px;
     stroke: white;
   }
+
+  @media screen and (max-width: 500px) {
+    margin: 2vh 5vw 0 4vw;
+  }
 `;
 
 const Items = styled.ul`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 500px) {
+    width: 40vw;
+    margin-top: 2vh;
+  }
 `;
 
 const Item = styled.li`
@@ -51,6 +63,10 @@ const Item = styled.li`
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
+
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 const Search = styled.form`
@@ -61,6 +77,36 @@ const Search = styled.form`
   svg {
     height: 25px;
     z-index: 2;
+  }
+
+  @media screen and (max-width: 500px) {
+    position: fixed;
+    right: 3vw;
+    margin-right: 1vw;
+    margin-top: 2vh;
+
+    svg {
+      height: 1.2rem;
+    }
+  }
+`;
+
+const Input = styled(motion.input)`
+  transform-origin: right center;
+  padding: 5px 10px;
+  padding-left: 40px;
+  z-index: 1;
+  color: white;
+  font-size: 16px;
+  background-color: transparent;
+  border: 1px solid ${(props) => props.theme.white.lighter};
+
+  @media screen and (max-width: 500px) {
+    ::placeholder {
+      visibility: hidden;
+      width: 0px;
+    }
+    width: 15vw;
   }
 `;
 
@@ -74,17 +120,6 @@ const Circle = styled(motion.span)`
   right: 0px;
   margin: 0 auto;
   background-color: ${(props) => props.theme.red};
-`;
-
-const Input = styled(motion.input)`
-  transform-origin: right center;
-  padding: 5px 10px;
-  padding-left: 40px;
-  z-index: 1;
-  color: white;
-  font-size: 16px;
-  background-color: transparent;
-  border: 1px solid ${(props) => props.theme.white.lighter};
 `;
 
 const logoVariants = {
@@ -177,6 +212,7 @@ const Header = () => {
           <motion.svg
             style={{ cursor: "pointer" }}
             animate={{ x: searchOpen ? -210 : 0 }}
+            custom={searchOpen}
             transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"

@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./Routes/Home";
 import Search from "./Routes/Search";
+import Siwper from "./Routes/Siwper";
 import Tv from "./Routes/Tv";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="/movies/:category/:movieId" element={<Home />} />
         </Route>
+        <Route path="/swiper" element={<Siwper />} />
       </Routes>
     </BrowserRouter>
   );

@@ -26,6 +26,11 @@ export const Banner = styled.div<{ bgPhoto: string }>`
   background-image: radial-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)),
     url(${(props) => props.bgPhoto});
   background-size: cover;
+
+  @media screen and (max-width: 500px) {
+    visibility: hidden;
+    height: 20vh;
+  }
 `;
 
 export const Title = styled.h2`
