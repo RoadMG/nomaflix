@@ -8,6 +8,9 @@ import { Helmet } from "react-helmet";
 export const Wrapper = styled.div`
   background: black;
   overflow: hidden;
+  @media screen and (max-width: 700px) {
+    width: 100vw;
+  }
 `;
 
 export const Loader = styled.div`
@@ -27,9 +30,12 @@ export const Banner = styled.div<{ bgPhoto: string }>`
     url(${(props) => props.bgPhoto});
   background-size: cover;
 
-  @media screen and (max-width: 500px) {
-    visibility: hidden;
-    height: 20vh;
+  @media screen and (max-width: 700px) {
+    width: 100vw;
+    height: 40vh;
+    padding: 0;
+    background-size: 100% 100%;
+    align-items: center;
   }
 `;
 
@@ -37,6 +43,12 @@ export const Title = styled.h2`
   font-size: 58px;
   margin-bottom: 20px;
   margin-top: 300px;
+
+  @media screen and (max-width: 700px) {
+    margin-top: 35vh;
+    font-size: 2rem;
+    font-weight: bold;
+  }
 `;
 
 export const OverView = styled.p`
@@ -52,6 +64,10 @@ export const OverView = styled.p`
   white-space: normal;
   display: -webkit-box;
   font-weight: 300;
+
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+  }
 `;
 
 ///////////// styled components //////////////

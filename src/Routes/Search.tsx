@@ -28,11 +28,9 @@ import {
   BigTitle,
   Box,
   BoxVariants,
-  infoVariants,
   Category,
   CloseBtn,
   Details,
-  Info,
   Overlay,
 } from "../Components/Slider";
 import { makeImagePath } from "../utils";
@@ -42,6 +40,17 @@ const RowBox = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
+
+  @media screen and (max-width: 700px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const SearchWrap = styled.div`
+  padding: 30px;
+  margin-top: 50px;
+  margin-bottom: -30px;
+  width: 100vw;
 `;
 
 const Search = () => {
@@ -127,10 +136,10 @@ const Search = () => {
         <Loader>isLoading...</Loader>
       ) : (
         <>
-          <div style={{ marginTop: "100px", padding: "50px" }}>
+          <SearchWrap>
             <Category>Movies</Category>
             <RowBox>
-              {searchMovieData?.results.map((movie) => (
+              {searchMovieData?.results.slice(10).map((movie) => (
                 <Box
                   bgphoto={makeImagePath(
                     movie.backdrop_path || movie.poster_path,
@@ -140,17 +149,11 @@ const Search = () => {
                   onClick={() => onMovieBoxClicked(movie.id)}
                   layoutId={"movie" + movie.id}
                   variants={BoxVariants}
-                  whileHover="hover"
                   initial="normal"
-                >
-                  <Info variants={infoVariants}>
-                    {" "}
-                    <h4>{movie.title}</h4>
-                  </Info>
-                </Box>
+                ></Box>
               ))}
             </RowBox>
-          </div>
+          </SearchWrap>
           <AnimatePresence>
             {movieMatch ? (
               <>
@@ -190,12 +193,7 @@ const Search = () => {
                           </div>
                           <BigOverView>{clickedMovie.overview}</BigOverView>
                           <BigCast>
-                            <span
-                              style={{ fontSize: "15px", fontWeight: "200" }}
-                            >
-                              Cast
-                            </span>
-                            :{" "}
+                            <span>Cast</span>:{" "}
                             {movieCreditData?.cast
                               .splice(0, 3)
                               .map((prop) => prop.name + ", ")}
@@ -210,10 +208,10 @@ const Search = () => {
               </>
             ) : null}
           </AnimatePresence>
-          <div style={{ padding: "50px" }}>
+          <SearchWrap>
             <Category>TV Shows</Category>
             <RowBox>
-              {searchTVData?.results.map((tv) => (
+              {searchTVData?.results.slice(10).map((tv) => (
                 <Box
                   bgphoto={makeImagePath(
                     tv.backdrop_path || tv.poster_path,
@@ -223,17 +221,11 @@ const Search = () => {
                   onClick={() => onTvBoxClicked(tv.id)}
                   layoutId={"tv" + tv.id}
                   variants={BoxVariants}
-                  whileHover="hover"
                   initial="normal"
-                >
-                  <Info variants={infoVariants}>
-                    {" "}
-                    <h4>{tv.original_name}</h4>
-                  </Info>
-                </Box>
+                ></Box>
               ))}
             </RowBox>
-          </div>
+          </SearchWrap>
           <AnimatePresence>
             {tvMatch ? (
               <>
@@ -277,12 +269,7 @@ const Search = () => {
                           </div>
                           <BigOverView>{clickedTv.overview}</BigOverView>
                           <BigCast>
-                            <span
-                              style={{ fontSize: "15px", fontWeight: "200" }}
-                            >
-                              Cast
-                            </span>
-                            :{" "}
+                            <span>Cast</span>:{" "}
                             {tvCreditData?.cast
                               .splice(0, 3)
                               .map((prop) => prop.name + ", ")}

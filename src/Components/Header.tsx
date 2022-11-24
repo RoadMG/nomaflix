@@ -9,14 +9,19 @@ const Nav = styled(motion.nav)`
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  width: 100vw;
+  width: 50vw;
+  height: 10vh;
   top: 0;
   padding: 20px 60px;
   color: white;
   font-size: 14px;
-  @media screen and (max-width: 500px) {
+  z-index: 7;
+  @media screen and (max-width: 700px) {
+    top: 0;
+    height: 7vh;
     justify-content: flex-start;
     padding: 0px;
+    width: 100vw;
   }
 `;
 
@@ -30,12 +35,8 @@ const Logo = styled(motion.svg)`
   width: 95px;
   height: 25px;
   fill: ${(props) => props.theme.red};
-  path {
-    stroke-width: 6px;
-    stroke: white;
-  }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 700px) {
     margin: 2vh 5vw 0 4vw;
   }
 `;
@@ -43,7 +44,7 @@ const Logo = styled(motion.svg)`
 const Items = styled.ul`
   display: flex;
   align-items: center;
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 700px) {
     width: 40vw;
     margin-top: 2vh;
   }
@@ -64,7 +65,7 @@ const Item = styled.li`
     color: ${(props) => props.theme.white.lighter};
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 700px) {
     font-size: 12px;
   }
 `;
@@ -74,19 +75,33 @@ const Search = styled.form`
   display: flex;
   align-items: center;
   position: relative;
+  visibility: visible;
+  right: 20px;
+  position: fixed;
   svg {
     height: 25px;
     z-index: 2;
   }
 
-  @media screen and (max-width: 500px) {
-    position: fixed;
-    right: 3vw;
-    margin-right: 1vw;
-    margin-top: 2vh;
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+  }
+`;
 
+const MobileSearch = styled.form`
+  visibility: hidden;
+
+  @media screen and (max-width: 700px) {
+    color: white;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    visibility: visible;
+    top: 2.5vh;
+    right: 1vw;
     svg {
-      height: 1.2rem;
+      height: 1rem;
+      z-index: 2;
     }
   }
 `;
@@ -97,16 +112,20 @@ const Input = styled(motion.input)`
   padding-left: 40px;
   z-index: 1;
   color: white;
+  width: 215px;
   font-size: 16px;
   background-color: transparent;
   border: 1px solid ${(props) => props.theme.white.lighter};
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 700px) {
+    width: 100px;
+    position: fixed;
+    right: 1vw;
+    padding: 0.2rem 20px;
+
     ::placeholder {
-      visibility: hidden;
-      width: 0px;
+      font-size: 0.8rem;
     }
-    width: 15vw;
   }
 `;
 
@@ -138,6 +157,8 @@ const navVariants = {
   top: { backgroundColor: "rgba(0, 0, 0, 0)" },
   scroll: { backgroundColor: "rgba(0, 0, 0, 1)" },
 };
+
+const svgVariants = {};
 
 interface IForm {
   keyword: string;
@@ -210,6 +231,7 @@ const Header = () => {
             initial={{ scaleX: 0 }}
           />
           <motion.svg
+            variants={svgVariants}
             style={{ cursor: "pointer" }}
             animate={{ x: searchOpen ? -210 : 0 }}
             custom={searchOpen}
@@ -228,6 +250,34 @@ const Header = () => {
             ></path>
           </motion.svg>
         </Search>
+        <MobileSearch onSubmit={handleSubmit(onValid)}>
+          <Input
+            {...register("keyword", { required: true, minLength: 2 })}
+            animate={inputAnimation}
+            transition={{ type: "linear" }}
+            placeholder="Search"
+            initial={{ scaleX: 0 }}
+          />
+          <motion.svg
+            variants={svgVariants}
+            style={{ cursor: "pointer" }}
+            animate={{ x: searchOpen ? -80 : 0 }}
+            custom={searchOpen}
+            transition={{ type: "linear" }}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={() => {
+              openSearch();
+            }}
+          >
+            <path
+              fillRule="evenodd"
+              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+              clipRule="evenodd"
+            ></path>
+          </motion.svg>
+        </MobileSearch>
       </Col>
     </Nav>
   );

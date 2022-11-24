@@ -13,7 +13,6 @@ const Wrap = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
   gap: 5px;
   padding: 10px;
 `;
@@ -90,7 +89,7 @@ export const MovieSimilar = ({ movieId }: IMovieForm) => {
     <>
       <SimilarTitle>Similar contents</SimilarTitle>
       <Wrap>
-        {similarData?.results.splice(0, 6).map((props) => (
+        {similarData?.results.slice(0, 6).map((props) => (
           <SimilarBox key={props.id}>
             {" "}
             <SimilarImg
@@ -123,7 +122,7 @@ export const TvSimilar = ({ tvId }: ITvForm) => {
     <>
       <SimilarTitle>Similar contents</SimilarTitle>
       <Wrap>
-        {similarData?.results.splice(0, 6).map((props) => (
+        {similarData?.results.slice(0, 6).map((props) => (
           <SimilarBox key={"tv" + props.id}>
             {" "}
             <SimilarImg

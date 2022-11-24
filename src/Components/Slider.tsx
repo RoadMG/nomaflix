@@ -22,18 +22,29 @@ import {
 import { makeImagePath, MovieCurrent, TvCurrent } from "../utils";
 import { useQuery } from "@tanstack/react-query";
 import { MovieSimilar, TvSimilar } from "./Similar";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
 
 export const Wrap = styled.div`
   position: relative;
   height: 200px;
   top: -100px;
   margin-bottom: 50px;
+  @media screen and (max-width: 700px) {
+    top: 1vh;
+  }
 `;
 
 export const Category = styled.h1`
-  font-size: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 15px;
+
+  @media screen and (max-width: 700px) {
+    margin-left: 1vw;
+    font-size: 1rem;
+  }
 `;
 
 export const Arrows = styled.div`
@@ -50,9 +61,24 @@ export const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   width: 100%;
   position: absolute;
+  visibility: visible;
 
   &:hover ~ ${Arrows} {
     opacity: 1;
+  }
+
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+  }
+`;
+
+export const MobileRow = styled(motion.div)`
+  width: 100%;
+  position: absolute;
+  visibility: hidden;
+
+  @media screen and (max-width: 700px) {
+    visibility: visible;
   }
 `;
 
@@ -97,7 +123,7 @@ export const NavArrow = styled.div`
 export const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 100vw;
   height: ${document.documentElement.clientHeight}px;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
@@ -121,10 +147,15 @@ export const BigMovie = styled(motion.div)<{ scrolly: number }>`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media screen and (max-width: 700px) {
+    width: 100vw;
+    margin: 0;
+  }
 `;
 
 export const BigCover = styled.div<{ bgPhoto: string }>`
-  width: 100%;
+  width: 100vw;
   position: relative;
   background-size: cover;
   background-position: center center;
@@ -143,6 +174,10 @@ export const BigTitle = styled.h3`
   -webkit-text-stroke-color: black;
   position: relative;
   top: -80px;
+
+  @media screen and (max-width: 700px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const BigOverView = styled.p`
@@ -150,6 +185,10 @@ export const BigOverView = styled.p`
   color: ${(props) => props.theme.white.lighter};
   font-weight: 400;
   width: 80%;
+
+  @media screen and (max-width: 700px) {
+    font-size: 0.8rem;
+  }
 `;
 
 export const CloseBtn = styled.div`
@@ -194,6 +233,19 @@ export const BigCast = styled.p`
   font-size: 16px;
   margin-left: 20px;
   font-weight: 350;
+
+  span {
+    font-size: 15px;
+    font-weight: 200;
+  }
+
+  @media screen and (max-width: 700px) {
+    font-size: 0.7rem;
+
+    span {
+      font-size: 1rem;
+    }
+  }
 `;
 
 //////////////styled components///////////////////////
@@ -347,8 +399,8 @@ export const MovieSlider = ({ current }: { current: MovieCurrent }) => {
               .slice(offset * index, offset * index + offset)
               .map((movie) => (
                 <Box
-                  layoutId={current + movie.id}
                   key={current + movie.id}
+                  layoutId={current + movie.id}
                   whileHover="hover"
                   initial="normal"
                   variants={BoxVariants}
@@ -390,6 +442,21 @@ export const MovieSlider = ({ current }: { current: MovieCurrent }) => {
             <NavigateNextIcon sx={{ fontSize: 100 }} />
           </NavArrow>
         </Arrows>
+        <MobileRow>
+          <Swiper slidesPerView={3} spaceBetween={3}>
+            {data?.results.map((movie) => (
+              <SwiperSlide key={current + movie.id}>
+                <Box
+                  whileHover="hover"
+                  onClick={() =>
+                    onBoxClicked({ movieId: movie.id, category: current })
+                  }
+                  bgphoto={makeImagePath(movie.backdrop_path, "w500")}
+                ></Box>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </MobileRow>
       </Wrap>
       <AnimatePresence>
         {bigMovieMatch ? (
@@ -432,19 +499,13 @@ export const MovieSlider = ({ current }: { current: MovieCurrent }) => {
                       </div>
                       <BigOverView>{clickedMovie.overview}</BigOverView>
                       <BigCast>
-                        <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                          Cast
-                        </span>
-                        :{" "}
+                        <span>Cast</span>:{" "}
                         {creditData?.cast
                           .splice(0, 3)
                           .map((prop) => prop.name + ", ")}
                       </BigCast>
                       <BigCast>
-                        <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                          Genre
-                        </span>
-                        :{" "}
+                        <span>Genre</span>:{" "}
                         {detailData?.genres
                           .splice(0, 2)
                           .map((prop) => prop.name + ", ")}
@@ -591,6 +652,24 @@ export function TvSlider({ current }: { current: TvCurrent }) {
                 </Box>
               ))}
           </Row>
+          <MobileRow>
+            <Swiper slidesPerView={3} spaceBetween={3}>
+              {data?.results.map((tv) => (
+                <SwiperSlide key={current + tv.id}>
+                  <Box
+                    whileHover="hover"
+                    onClick={() =>
+                      onBoxClicked({ tvId: tv.id, category: current })
+                    }
+                    bgphoto={makeImagePath(
+                      tv.backdrop_path || tv.poster_path,
+                      "w500"
+                    )}
+                  ></Box>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </MobileRow>
         </AnimatePresence>
         <Arrows>
           <NavArrow
@@ -662,35 +741,21 @@ export function TvSlider({ current }: { current: TvCurrent }) {
                       </div>
                       <BigOverView>{clickedTv.overview}</BigOverView>
                       <BigCast>
-                        <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                          Number of episodes:
-                        </span>{" "}
+                        <span>Number of episodes:</span>{" "}
                         {detailData?.number_of_episodes}
                       </BigCast>
                       <BigCast>
-                        <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                          Number of seasons:
-                        </span>{" "}
+                        <span>Number of seasons:</span>{" "}
                         {detailData?.number_of_seasons}
                       </BigCast>
                       <BigCast>
-                        <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                          Cast
-                        </span>
-                        :{" "}
+                        <span>Cast</span>:{" "}
                         {creditData?.cast
                           .splice(0, 3)
                           .map((prop) => prop.name + ", ")}
                       </BigCast>
                       <BigCast>
-                        {detailData?.genres ? (
-                          <span style={{ fontSize: "15px", fontWeight: "200" }}>
-                            Genre
-                          </span>
-                        ) : (
-                          ""
-                        )}
-                        :{" "}
+                        {detailData?.genres ? <span>Genre</span> : ""}:{" "}
                         {detailData?.genres
                           .splice(0, 2)
                           .map((prop) => prop.name + ", ")}
